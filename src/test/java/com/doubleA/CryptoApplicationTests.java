@@ -1,4 +1,4 @@
-package com.crypto;
+package com.doubleA;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
