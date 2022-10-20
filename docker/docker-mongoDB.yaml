@@ -10,6 +10,8 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=rootuser
       - MONGO_INITDB_ROOT_PASSWORD=rootpass
+      - MONGO_REPLICA_SET_NAME=rs1
+      - MONGO_REPLICA_SET_MODE=primary
   mongo-express:
     image: mongo-express
     container_name: mongo-express
@@ -21,7 +23,7 @@ services:
       - ME_CONFIG_MONGODB_ADMINPASSWORD=rootpass
       - ME_CONFIG_MONGODB_SERVER=mongodb
 volumes:
-  data: {}
+  data: { }
 
 networks:
   default:
