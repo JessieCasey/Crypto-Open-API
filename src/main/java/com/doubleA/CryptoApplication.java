@@ -10,7 +10,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableMongoRepositories
 @SpringBootApplication
 public class CryptoApplication {
-    // private static String apiKey = "936fbfc2-234f-42e4-b15f-dcede33d8ff1";
 
     public static void main(String[] args) {
         SpringApplication.run(CryptoApplication.class, args);
