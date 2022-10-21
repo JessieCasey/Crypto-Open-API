@@ -1,4 +1,4 @@
-package com.doubleA.auth;
+package com.doubleA.auth.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

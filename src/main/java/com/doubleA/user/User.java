@@ -16,7 +16,6 @@ import java.util.Collections;
 
 @Document
 @Data
-@RequiredArgsConstructor
 public class User implements UserDetails {
 
     @Id
@@ -26,12 +25,25 @@ public class User implements UserDetails {
     private String username;
 
     @NonNull
+    private String email;
+
+    @NonNull
     private String password;
 
     @DBRef
     private ApiKey apikey;
 
     private LocalDateTime date;
+
+    private String verificationCode;
+
+    private boolean enabled;
+
+    public User(@NonNull String email, @NonNull String username, @NonNull String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
 
     public User() {
         this.date = LocalDateTime.now();
@@ -59,6 +71,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 }

@@ -1,6 +1,6 @@
 package com.doubleA.security.jwt;
 
-import com.doubleA.auth.TokenDTO;
+import com.doubleA.auth.dto.TokenDTO;
 import com.doubleA.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

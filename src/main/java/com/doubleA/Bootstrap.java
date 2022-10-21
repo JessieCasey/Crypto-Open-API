@@ -21,9 +21,12 @@ public class Bootstrap {
             User tony = new User();
             tony.setPassword(passwordEncoder.encode("1"));
             tony.setUsername("Tony");
-            ApiKey inserted = apiKeyRepository.insert(new ApiKey());
-            tony.setApikey(inserted);
+            ApiKey apiKey = new ApiKey();
+            apiKey.setId("a6081a8ecb80e7324d10453acc64bbd7");
+            apiKeyRepository.insert(apiKey);
+            tony.setApikey(apiKey);
             userRepository.insert(tony);
+            System.out.println(tony.getApikey().getId());
         };
     }
 

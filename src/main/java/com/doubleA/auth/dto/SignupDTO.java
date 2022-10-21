@@ -1,4 +1,4 @@
-package com.doubleA.auth;
+package com.doubleA.auth.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,4 +8,5 @@ import lombok.Setter;
 public class SignupDTO {
     private String username;
     private String password;
+    private String email;
 }
