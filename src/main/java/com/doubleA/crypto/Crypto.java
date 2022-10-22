@@ -13,5 +13,4 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Crypto {
     @Id
     private String id;
-
 }

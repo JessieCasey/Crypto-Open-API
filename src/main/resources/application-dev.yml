@@ -6,5 +6,5 @@ MONGODB_USERNAME: "rootuser"
 MONGODB_PASSWORD: "rootpass"
 MONGODB_HOST: "localhost"
 MONGODB_PORT: '27017'
-MONGODB_DB: "chatdb"
+MONGODB_DB: "cryptodb"
 MONGODB_RS: "admin"

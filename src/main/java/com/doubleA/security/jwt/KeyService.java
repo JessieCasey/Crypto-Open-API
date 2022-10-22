@@ -22,9 +22,8 @@ import java.util.Objects;
 
 @Component
 @Slf4j
-public class KeyUtils {
-    @Autowired
-    Environment environment;
+public class KeyService {
+    private final Environment environment;
 
     @Value("${access-token.private}")
     private String accessTokenPrivateKeyPath;
@@ -40,6 +39,10 @@ public class KeyUtils {
 
     private KeyPair _accessTokenKeyPair;
     private KeyPair _refreshTokenKeyPair;
+
+    public KeyService(Environment environment) {
+        this.environment = environment;
+    }
 
     private KeyPair getAccessTokenKeyPair() {
         if (Objects.isNull(_accessTokenKeyPair)) {

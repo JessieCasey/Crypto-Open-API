@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/crypto")
 @Slf4j
 public class CryptoController {
-    // @CrossOrigin(origins = "http://localhost:8089")
 
     @GetMapping("/get")
     public ResponseEntity<?> test() {
