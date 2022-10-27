@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,6 +25,7 @@ public class User implements UserDetails {
     @NonNull
     private String username;
 
+    @Indexed(unique = true)
     @NonNull
     private String email;
 
@@ -40,6 +42,7 @@ public class User implements UserDetails {
     private boolean enabled;
 
     public User(@NonNull String email, @NonNull String username, @NonNull String password) {
+        this();
         this.username = username;
         this.email = email;
         this.password = password;

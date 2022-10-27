@@ -1,8 +1,8 @@
 package com.doubleA.crypto;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import com.doubleA.crypto.filter.ResourceRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CryptoRepository extends MongoRepository<Crypto, String> {
+public interface CryptoRepository extends ResourceRepository<Crypto, String> {
 }
