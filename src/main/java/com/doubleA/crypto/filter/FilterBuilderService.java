@@ -1,5 +1,6 @@
 package com.doubleA.crypto.filter;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,9 @@ import java.util.stream.Stream;
  * Service for Filtering Page
  * This class is used to extract any filters requested by the client.
  */
+
 @Service
+@Slf4j
 public class FilterBuilderService {
 
     private static final int DEFAULT_SIZE_PAGE = 20;
@@ -32,10 +35,10 @@ public class FilterBuilderService {
 
             if (criteria != null && !criteria.isEmpty()) {
 
-                final String FILTER_SHEARCH_DELIMITER = "&";
-                final String FILTER_CONDITION_DELIMITER = "\\|";
+                final String FILTER_SEARCH_DELIMITER = "&";
+                final String FILTER_CONDITION_DELIMITER = "\\$";
 
-                List<String> values = split(criteria, FILTER_SHEARCH_DELIMITER);
+                List<String> values = split(criteria, FILTER_SEARCH_DELIMITER);
                 if (!values.isEmpty()) {
                     values.forEach(x -> {
                         List<String> filter = split(x, FILTER_CONDITION_DELIMITER);
@@ -53,7 +56,6 @@ public class FilterBuilderService {
         }
 
     }
-
 
     private static List<String> split(String search, String delimiter) {
         return Stream.of(search.split(delimiter))
@@ -77,9 +79,10 @@ public class FilterBuilderService {
         try {
             if (order != null && !order.isEmpty()) {
 
-                final String FILTER_CONDITION_DELIMITER = "\\|";
+                final String FILTER_CONDITION_DELIMITER = "\\$";
 
                 List<String> values = split(order, FILTER_CONDITION_DELIMITER);
+
                 String column = values.get(0);
                 String sortDirection = values.get(1);
 

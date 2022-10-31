@@ -1,28 +1,35 @@
 package com.doubleA.email;
 
 
-import com.doubleA.user.UserService;
+import com.doubleA.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/verify")
 @Slf4j
 public class EmailController {
-    final UserService userService;
+
+    private final UserService userService;
 
     public EmailController(UserService userService) {
         this.userService = userService;
     }
 
     @GetMapping
-    public String verifyUser(@RequestParam String code) {
+    public ResponseEntity<?> verifyUser(@RequestParam String code) {
         log.info("[GET][EmailController]: method 'verifyUser'");
-        String verify = userService.verify(code);
-        if (!verify.isEmpty()) {
-            return verify;
-        } else {
-            return "verify_fail";
+        try {
+            String verify = userService.verify(code);
+            if (!verify.isEmpty()) {
+                return ResponseEntity.ok("Verified");
+            } else {
+                return ResponseEntity.badRequest().body("Not verified");
+            }
+        } catch (Exception e) {
+            log.error("[GET][EmailController]: Error method 'verifyUser': " + e.getMessage());
+            return ResponseEntity.badRequest().body(e);
         }
     }
 }

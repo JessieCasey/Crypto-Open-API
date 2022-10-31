@@ -1,4 +1,4 @@
-package com.doubleA.crypto.filter;
+package com.doubleA.crypto.filter.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -1,6 +1,6 @@
 package com.doubleA.crypto;
 
-import com.doubleA.crypto.filter.ResourceRepository;
+import com.doubleA.crypto.filter.repository.ResourceRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository

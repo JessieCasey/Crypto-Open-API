@@ -9,7 +9,7 @@ import javax.crypto.SecretKey;
 import javax.xml.bind.DatatypeConverter;
 import java.security.NoSuchAlgorithmException;
 
-@Document
+@Document("ApiKeys")
 @Data
 public class ApiKey {
 

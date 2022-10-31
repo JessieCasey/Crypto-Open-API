@@ -2,7 +2,6 @@ package com.doubleA;
 
 import com.doubleA.apikey.ApiKey;
 import com.doubleA.apikey.ApiKeyRepository;
-import com.doubleA.crypto.Crypto;
 import com.doubleA.crypto.CryptoRepository;
 import com.doubleA.user.User;
 import com.doubleA.user.UserRepository;
@@ -11,15 +10,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-
 @Component
 public class Bootstrap {
 
 //    @Bean
 //    CommandLineRunner runner(UserRepository userRepository, PasswordEncoder passwordEncoder,
 //                             ApiKeyRepository apiKeyRepository, CryptoRepository cryptoRepository) {
-////        userRepository.deleteAll();
+//        userRepository.deleteAll();
 ////        apiKeyRepository.deleteAll();
 ////        cryptoRepository.deleteAll();
 //

@@ -6,12 +6,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CryptoDTO {
-    String id;
-    String name;
-    String symbol;
-    String image;
-    Float price;
-
+    private String id;
+    private String name;
+    private String symbol;
+    private String image;
+    private Float price;
     public CryptoDTO(String id, String name, String symbol, String image, Float price) {
         this.id = id;
         this.name = name;

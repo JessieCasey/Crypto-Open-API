@@ -1,7 +1,10 @@
-package com.doubleA.crypto;
+package com.doubleA.crypto.service;
 
+import com.doubleA.crypto.Crypto;
+import com.doubleA.crypto.CryptoRepository;
 import com.doubleA.crypto.dto.CryptoDTO;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
@@ -15,6 +18,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.query.Query;
@@ -23,21 +27,21 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
 public class CryptoServiceImpl implements CryptoService {
 
+    private final String apiKey;
     private final CryptoRepository cryptoRepository;
 
-    public CryptoServiceImpl(CryptoRepository cryptoRepository) {
+    public CryptoServiceImpl(CryptoRepository cryptoRepository,
+                             @Value("${alpha.apikey}") String apiKey) {
         this.cryptoRepository = cryptoRepository;
-    }
-
-    @Override
-    public List<Crypto> getListOfCryptos() {
-        return cryptoRepository.findAll();
+        this.apiKey = apiKey;
     }
 
     @Override
@@ -48,7 +52,9 @@ public class CryptoServiceImpl implements CryptoService {
 
         new JSONObject(makeAPICall(uri, new ArrayList<>())).getJSONArray("coins").forEach(x -> {
             JSONObject next = ((JSONObject) x).getJSONObject("item");
-            response.add(new CryptoDTO(next.getString("id"), next.getString("name"), next.getString("small"), next.getString("id"), next.getFloat("price_btc")));
+            response.add(new CryptoDTO(
+                    next.getString("id"), next.getString("name"),
+                    next.getString("small"), next.getString("id"), next.getFloat("price_btc")));
         });
 
         return response;
@@ -71,6 +77,20 @@ public class CryptoServiceImpl implements CryptoService {
             final JSONObject cryptoJSON = data.getJSONObject(i);
             cryptoRepository.save(new Gson().fromJson(String.valueOf(cryptoJSON), Crypto.class));
         }
+
+
+    }
+
+    @Override
+    public Map<String, Object> getDataToMakeGraph(String cryptoName, String time) {
+        String market = "USD";
+        String uri = "https://www.alphavantage.co/query?function="
+                + time + "&symbol=" + cryptoName + "&market=" + market + "&apikey=" + apiKey;
+
+        return new Gson().fromJson(
+                makeAPICall(uri, new ArrayList<>()),
+                new TypeToken<HashMap<String, Object>>() {
+                }.getType());
     }
 
     @Override
@@ -79,7 +99,7 @@ public class CryptoServiceImpl implements CryptoService {
     }
 
     public static String makeAPICall(String uri, List<NameValuePair> parameters) {
-        String response_content = "";
+        String responseContent = "";
 
         try {
             URIBuilder query = new URIBuilder(uri);
@@ -92,13 +112,13 @@ public class CryptoServiceImpl implements CryptoService {
 
             try (CloseableHttpResponse response = client.execute(request)) {
                 HttpEntity entity = response.getEntity();
-                response_content = EntityUtils.toString(entity);
+                responseContent = EntityUtils.toString(entity);
                 EntityUtils.consume(entity);
             }
         } catch (URISyntaxException | IOException e) {
             throw new RuntimeException(e);
         }
-        return response_content;
+        return responseContent;
     }
 
 

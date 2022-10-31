@@ -3,7 +3,6 @@ package com.doubleA.user;
 import com.doubleA.apikey.ApiKey;
 import lombok.Data;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -12,6 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -22,6 +22,7 @@ public class User implements UserDetails {
     @Id
     private String id;
 
+    @Indexed(unique = true)
     @NonNull
     private String username;
 
@@ -36,6 +37,8 @@ public class User implements UserDetails {
     private ApiKey apikey;
 
     private LocalDateTime date;
+
+    private LocalDateTime authorizationTime;
 
     private String verificationCode;
 
@@ -59,7 +62,8 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        long between = ChronoUnit.MONTHS.between(LocalDateTime.now(), authorizationTime);
+        return !(between > 6);
     }
 
     @Override

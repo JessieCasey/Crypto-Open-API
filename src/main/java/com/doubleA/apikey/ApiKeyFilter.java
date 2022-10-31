@@ -28,7 +28,7 @@ public class ApiKeyFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
-        if (req.getRequestURI().matches(".*\\b(auth|verify|crypto)\\b.*") || apiKeyRepository.existsById(req.getHeader(APIKEY))) {
+        if (req.getRequestURI().matches(".*\\b(auth|verify|crypto|api)\\b.*") || apiKeyRepository.existsById(req.getHeader(APIKEY))) {
             chain.doFilter(request, response);
         } else {
             HttpServletResponse httpResponse = (HttpServletResponse) response;
