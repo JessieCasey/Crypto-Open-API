@@ -15,4 +15,6 @@ public interface UserRepository extends MongoRepository<User, String>, ResourceR
     User findByVerificationCode(String code);
 
     void deleteByUsername(String username);
+
+    Boolean existsByEmail(String email);
 }

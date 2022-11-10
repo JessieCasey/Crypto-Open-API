@@ -27,7 +27,7 @@ import java.text.MessageFormat;
 
 @Service
 @Slf4j
-public class UserService implements UserDetailsManager {
+public class UserService {
 
     final UserRepository userRepository;
     final ApiKeyRepository apiKeyRepository;
@@ -45,7 +45,7 @@ public class UserService implements UserDetailsManager {
         this.fromAddress = fromAddress;
     }
 
-    @Override
+
     public void createUser(UserDetails userDetails) {
         User user = (User) userDetails;
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -129,7 +129,7 @@ public class UserService implements UserDetailsManager {
         return userRepository.findAll(query, pageable);
     }
 
-    @Override
+
     public void updateUser(UserDetails userDetails) {
         User user = (User) userDetails;
         if (userDetails != null && userExists(user.getUsername())) {
@@ -137,26 +137,21 @@ public class UserService implements UserDetailsManager {
         }
     }
 
-    @Override
+
     public void deleteUser(String username) {
         if (userExists(username)) {
             userRepository.deleteByUsername(username);
         }
     }
 
-    @Override
+
     public void changePassword(String oldPassword, String newPassword) {
 
     }
 
-    @Override
+
     public boolean userExists(String username) {
         return userRepository.existsByUsername(username);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(MessageFormat.format("username {0} not found", username)));
-    }
 }
