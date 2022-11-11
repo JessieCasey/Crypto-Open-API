@@ -1,6 +1,5 @@
 package com.doubleA.user;
 
-import com.doubleA.auth.dto.UserDTO;
 import com.doubleA.crypto.filter.FilterBuilderService;
 import com.doubleA.crypto.filter.FilterCondition;
 import com.doubleA.crypto.filter.GenericFilterCriteriaBuilder;
@@ -23,8 +22,8 @@ import java.util.List;
 @Slf4j
 public class UserController {
 
-    final UserRepository userRepository;
-    final UserService userService;
+    private final UserRepository userRepository;
+    private final UserService userService;
     private final FilterBuilderService filterBuilderService;
 
     public UserController(UserRepository userRepository, UserService userService, FilterBuilderService filterBuilderService) {
@@ -74,4 +73,11 @@ public class UserController {
         }
 
     }
+
+    @GetMapping("/user")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    public String userAccess() {
+        return "User Content.";
+    }
+
 }

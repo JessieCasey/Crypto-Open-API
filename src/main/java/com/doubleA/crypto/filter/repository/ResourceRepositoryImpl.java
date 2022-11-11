@@ -14,8 +14,8 @@ import java.util.List;
 
 public class ResourceRepositoryImpl<T, I extends Serializable> extends SimpleMongoRepository<T, I> implements ResourceRepository<T, I> {
 
-    private MongoOperations mongoOperations;
-    private MongoEntityInformation entityInformation;
+    private final MongoOperations mongoOperations;
+    private final MongoEntityInformation entityInformation;
 
     public ResourceRepositoryImpl(final MongoEntityInformation entityInformation, final MongoOperations mongoOperations) {
         super(entityInformation, mongoOperations);

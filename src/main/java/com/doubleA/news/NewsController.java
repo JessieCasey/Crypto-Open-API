@@ -1,6 +1,5 @@
 package com.doubleA.news;
 
-import com.doubleA.crypto.Crypto;
 import com.doubleA.crypto.filter.FilterBuilderService;
 import com.doubleA.crypto.filter.FilterCondition;
 import com.doubleA.crypto.filter.GenericFilterCriteriaBuilder;

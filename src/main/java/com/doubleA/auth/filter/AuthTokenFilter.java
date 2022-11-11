@@ -1,6 +1,7 @@
-package com.doubleA.security.jwt;
+package com.doubleA.auth.filter;
 
-import com.doubleA.user.UserDetailsServiceImpl;
+import com.doubleA.security.jwt.JwtUtils;
+import com.doubleA.user.service.UserDetailsServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,6 +19,7 @@ import java.io.IOException;
 
 @Slf4j
 public class AuthTokenFilter extends OncePerRequestFilter {
+
     @Autowired
     private JwtUtils jwtUtils;
 

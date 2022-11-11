@@ -10,9 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class FilterCondition {
-
     private String field;
     private FilterOperationEnum operator;
     private Object value;
-
 }

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Bootstrap {
-
     @Bean
     CommandLineRunner runner(RoleRepository roleRepository) {
         roleRepository.deleteAll();
