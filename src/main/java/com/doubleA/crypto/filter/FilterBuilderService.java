@@ -68,7 +68,7 @@ public class FilterBuilderService {
      *
      * @param size  the number of items to collect
      * @param page  page number
-     * @param order search order filter (eg: field|ASC)
+     * @param order search order filter (eg: field$ASC)
      * @return PageRequest
      */
     public PageRequest getPageable(int size, int page, String order) {

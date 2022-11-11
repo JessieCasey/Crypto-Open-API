@@ -33,14 +33,14 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public void updateData() {
-        String uri = "https://www.alphavantage.co/query";
+        String url = "https://www.alphavantage.co/query";
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("function", "NEWS_SENTIMENT"));
         params.add(new BasicNameValuePair("tickers", "AAPL"));
         params.add(new BasicNameValuePair("topics", "technology"));
         params.add(new BasicNameValuePair("apikey", apiKey));
 
-        new JSONObject(makeAPICall(uri, params)).getJSONArray("feed").forEach(x -> {
+        new JSONObject(makeAPICall(url, params)).getJSONArray("feed").forEach(x -> {
             newsRepository.insert(new Gson().fromJson(String.valueOf(x), News.class));
         });
     }

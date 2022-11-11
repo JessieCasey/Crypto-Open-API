@@ -1,35 +1,26 @@
 package com.doubleA;
 
-import com.doubleA.apikey.ApiKey;
-import com.doubleA.apikey.ApiKeyRepository;
-import com.doubleA.crypto.CryptoRepository;
-import com.doubleA.user.User;
-import com.doubleA.user.UserRepository;
+import com.doubleA.user.role.ERole;
+import com.doubleA.user.role.Role;
+import com.doubleA.user.role.RoleRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Bootstrap {
+    @Bean
+    CommandLineRunner runner(RoleRepository roleRepository) {
+        roleRepository.deleteAll();
 
-//    @Bean
-//    CommandLineRunner runner(UserRepository userRepository, PasswordEncoder passwordEncoder,
-//                             ApiKeyRepository apiKeyRepository, CryptoRepository cryptoRepository) {
-//        userRepository.deleteAll();
-////        apiKeyRepository.deleteAll();
-////        cryptoRepository.deleteAll();
-//
-//        return args -> {
-//            User tony = new User();
-//            tony.setPassword(passwordEncoder.encode("1"));
-//            tony.setUsername("Tony");
-//            ApiKey apiKey = new ApiKey();
-//            apiKey.setId("a6081a8ecb80e7324d10453acc64bbd7");
-//            apiKeyRepository.insert(apiKey);
-//            tony.setApikey(apiKey);
-//            userRepository.insert(tony);
-//        };
-//    }
+        return args -> {
+            Role role1 = new Role(ERole.ROLE_USER);
+            Role role2 = new Role(ERole.ROLE_MODERATOR);
+            Role role3 = new Role(ERole.ROLE_ADMIN);
+            roleRepository.save(role1);
+            roleRepository.save(role2);
+            roleRepository.save(role3);
+        };
+    }
 
 }

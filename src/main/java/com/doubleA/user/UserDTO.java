@@ -1,7 +1,5 @@
-package com.doubleA.auth.dto;
+package com.doubleA.user;
 
-
-import com.doubleA.user.User;
 import lombok.Builder;
 import lombok.Data;
 

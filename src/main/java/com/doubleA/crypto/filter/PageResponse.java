@@ -25,7 +25,7 @@ public class PageResponse<T> {
 
     private List<T> items;
 
-    public void setPageStats(Page pg, List<T> elts) {
+    public void setPageStats(Page<?> pg, List<T> elts) {
         first = pg.isFirst();
         last = pg.isLast();
         currentPage = pg.getNumber() + 1;

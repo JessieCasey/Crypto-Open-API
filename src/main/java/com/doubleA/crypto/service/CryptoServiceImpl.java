@@ -77,8 +77,6 @@ public class CryptoServiceImpl implements CryptoService {
             final JSONObject cryptoJSON = data.getJSONObject(i);
             cryptoRepository.save(new Gson().fromJson(String.valueOf(cryptoJSON), Crypto.class));
         }
-
-
     }
 
     @Override

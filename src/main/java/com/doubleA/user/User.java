@@ -1,37 +1,48 @@
 package com.doubleA.user;
 
 import com.doubleA.apikey.ApiKey;
+import com.doubleA.user.role.Role;
 import lombok.Data;
-import lombok.NonNull;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Document
 @Data
-public class User implements UserDetails {
-
+@Getter
+@Setter
+public class User {
     @Id
     private String id;
 
-    @Indexed(unique = true)
-    @NonNull
+    @NotBlank
+    @Size(max = 20)
     private String username;
 
-    @Indexed(unique = true)
-    @NonNull
+    @NotBlank
+    @Size(max = 50)
+    @Email
     private String email;
 
-    @NonNull
+    @NotBlank
+    @Size(max = 120)
     private String password;
+
+    private Set<Role> roles = new HashSet<>();
 
     @DBRef
     private ApiKey apikey;
@@ -44,7 +55,7 @@ public class User implements UserDetails {
 
     private boolean enabled;
 
-    public User(@NonNull String email, @NonNull String username, @NonNull String password) {
+    public User(@NotNull String username, @NotNull String email, @NotNull String password) {
         this();
         this.username = username;
         this.email = email;
@@ -55,29 +66,9 @@ public class User implements UserDetails {
         this.date = LocalDateTime.now();
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.EMPTY_LIST;
-    }
-
-    @Override
     public boolean isAccountNonExpired() {
         long between = ChronoUnit.MONTHS.between(LocalDateTime.now(), authorizationTime);
         return !(between > 6);
     }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return enabled;
-    }
 }
+
