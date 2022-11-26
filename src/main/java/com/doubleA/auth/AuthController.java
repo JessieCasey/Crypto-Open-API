@@ -2,24 +2,23 @@ package com.doubleA.auth;
 
 import com.doubleA.auth.dto.SignInDTO;
 import com.doubleA.auth.dto.SignupDTO;
-import com.doubleA.auth.token.*;
+import com.doubleA.auth.token.RefreshToken;
 import com.doubleA.auth.token.dto.TokenRefreshRequest;
 import com.doubleA.auth.token.dto.TokenRefreshResponse;
 import com.doubleA.auth.token.exception.TokenRefreshException;
 import com.doubleA.auth.token.service.RefreshTokenService;
+import com.doubleA.security.jwt.JwtResponse;
 import com.doubleA.security.jwt.JwtUtils;
 import com.doubleA.security.jwt.MessageResponse;
 import com.doubleA.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/auth")
 @Slf4j
@@ -36,8 +35,10 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody SignInDTO loginRequest) {
-        return ResponseEntity.ok(userService.authenticate(loginRequest));
+    public ResponseEntity<JwtResponse> authenticateUser(@Valid @RequestBody SignInDTO loginRequest) {
+        JwtResponse authenticate = userService.authenticate(loginRequest);
+        System.out.println(authenticate.getUsername());
+        return ResponseEntity.ok(authenticate);
     }
 
     @PostMapping("/refreshtoken")

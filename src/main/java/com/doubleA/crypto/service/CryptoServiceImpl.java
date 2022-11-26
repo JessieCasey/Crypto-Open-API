@@ -26,10 +26,12 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @Slf4j
@@ -45,19 +47,33 @@ public class CryptoServiceImpl implements CryptoService {
     }
 
     @Override
-    public List<CryptoDTO> getTrending() {
-        String uri = "https://api.coingecko.com/api/v3/search/trending";
+    public List<CryptoDTO> getTrending(int count) {
+        List<Crypto> coins = cryptoRepository.findAll();
+        count = ((count == 0 || count > coins.size()) ? coins.size() : count);
 
-        List<CryptoDTO> response = new ArrayList<>();
+        DecimalFormat df = new DecimalFormat("#.##");
+        AtomicInteger counter = new AtomicInteger(0);
+        return coins.stream()
+                .sorted((o1, o2) -> o2.getPriceChangePercentage().compareTo(o1.getPriceChangePercentage()))
+                .limit(count).map(
+                        x -> new CryptoDTO(counter.incrementAndGet(), x.getName(),
+                                x.getSymbol().toUpperCase(), x.getImageURL(),
+                                Float.parseFloat(df.format(x.getPriceChangePercentage())))).toList();
+    }
 
-        new JSONObject(makeAPICall(uri, new ArrayList<>())).getJSONArray("coins").forEach(x -> {
-            JSONObject next = ((JSONObject) x).getJSONObject("item");
-            response.add(new CryptoDTO(
-                    next.getString("id"), next.getString("name"),
-                    next.getString("small"), next.getString("id"), next.getFloat("price_btc")));
-        });
+    @Override
+    public List<CryptoDTO> getTopMarketCap(int count) {
+        List<Crypto> coins = cryptoRepository.findAll();
+        count = ((count == 0 || count > coins.size()) ? coins.size() : count);
 
-        return response;
+        DecimalFormat df = new DecimalFormat("#.##");
+        AtomicInteger counter = new AtomicInteger(0);
+        return coins.stream()
+                .sorted((o1, o2) -> o2.getMarketCapChangePercentage().compareTo(o1.getMarketCapChangePercentage()))
+                .limit(count).map(
+                        x -> new CryptoDTO(counter.incrementAndGet(), x.getName(),
+                                x.getSymbol().toUpperCase(), x.getImageURL(),
+                                Float.parseFloat(df.format(x.getMarketCapChangePercentage())))).toList();
     }
 
     @Override
@@ -67,16 +83,24 @@ public class CryptoServiceImpl implements CryptoService {
 
     @Override
     public void updateData() {
-        String uri = "https://api.coingecko.com/api/v3/coins/markets";
+        cryptoRepository.deleteAll();
+        String url = "https://api.coingecko.com/api/v3/coins/markets";
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("vs_currency", "usd"));
+        params.add(new BasicNameValuePair("per_page", "250"));
+        JSONArray data;
 
-        final JSONArray data = new JSONArray(makeAPICall(uri, params));
-
-        for (int i = 0; i < data.length(); ++i) {
-            final JSONObject cryptoJSON = data.getJSONObject(i);
-            cryptoRepository.save(new Gson().fromJson(String.valueOf(cryptoJSON), Crypto.class));
+        int pages = 3;
+        for (int i = 0; i < pages; i++) {
+            params.add(new BasicNameValuePair("page", i + ""));
+            data = new JSONArray(makeAPICall(url, params));
+            for (int j = 0; j < data.length(); ++j) {
+                final JSONObject cryptoJSON = data.getJSONObject(j);
+                if (!cryptoJSON.isNull("price_change_percentage_24h") && !cryptoJSON.isNull("market_cap_change_percentage_24h"))
+                    cryptoRepository.save(new Gson().fromJson(String.valueOf(cryptoJSON), Crypto.class));
+            }
         }
+
     }
 
     @Override

@@ -12,11 +12,11 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/users")
 @Slf4j
@@ -33,8 +33,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("#user.id == #id")
-    public ResponseEntity<?> getUserById(@AuthenticationPrincipal User user, @PathVariable String id) {
+    public ResponseEntity<?> getUserById(@PathVariable String id) {
+        log.info(id);
         log.info("[Get] Request to method 'getUserById'");
         try {
             return ResponseEntity.ok(UserDTO.from(userRepository.findById(id).orElseThrow()));
@@ -69,7 +69,7 @@ public class UserController {
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error in method 'getSearchCriteriaPage': " + e.getMessage());
-            return ResponseEntity.badRequest().body(e);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
 
     }

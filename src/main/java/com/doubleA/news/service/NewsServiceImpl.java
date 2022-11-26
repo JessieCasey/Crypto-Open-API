@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +44,28 @@ public class NewsServiceImpl implements NewsService {
         new JSONObject(makeAPICall(url, params)).getJSONArray("feed").forEach(x -> {
             newsRepository.insert(new Gson().fromJson(String.valueOf(x), News.class));
         });
+    }
+
+    @Override
+    public News getNewestNews() {
+        return newsRepository.findAll().stream().min((o1, o2) -> {
+            StringBuilder o1Time = new StringBuilder(o1.getTime()); // Format 2022-10-31T13:44:14
+            StringBuilder o2Time = new StringBuilder(o2.getTime());
+
+            o1Time.insert(4, "-");
+            o2Time.insert(4, "-");
+
+            o1Time.insert(7, "-");
+            o2Time.insert(7, "-");
+
+            o1Time.insert(13, ":");
+            o2Time.insert(13, ":");
+
+            o1Time.insert(16, ":");
+            o2Time.insert(16, ":");
+
+            return LocalDateTime.parse(o2Time).compareTo(LocalDateTime.parse(o1Time));
+        }).orElseThrow(IllegalArgumentException::new);
     }
 
     @Override
