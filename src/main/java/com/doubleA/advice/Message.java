@@ -9,7 +9,7 @@ import java.util.Date;
 @Getter
 @Setter
 @AllArgsConstructor
-public class ErrorMessage {
+public class Message {
     private int statusCode;
     private Date timestamp;
     private String message;

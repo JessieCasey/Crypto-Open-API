@@ -13,7 +13,7 @@ import java.util.Map;
 
 public interface CryptoService {
 
-    List<CryptoDTO> getTrending();
+    List<CryptoDTO> getTrending(int count);
 
     Crypto getCrypto(String key);
 
@@ -22,5 +22,7 @@ public interface CryptoService {
     Map<String, Object> getDataToMakeGraph(String cryptoName, String time);
 
     Page<Crypto> getPage(Query query, Pageable pageable);
+
+    List<CryptoDTO> getTopMarketCap(int count);
 
 }

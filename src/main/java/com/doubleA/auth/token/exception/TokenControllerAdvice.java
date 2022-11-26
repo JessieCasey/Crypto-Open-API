@@ -1,6 +1,6 @@
 package com.doubleA.auth.token.exception;
 
-import com.doubleA.advice.ErrorMessage;
+import com.doubleA.advice.Message;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -14,7 +14,7 @@ public class TokenControllerAdvice {
 
     @ExceptionHandler(value = TokenRefreshException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ErrorMessage handleTokenRefreshException(TokenRefreshException ex, WebRequest request) {
-        return new ErrorMessage(HttpStatus.FORBIDDEN.value(), new Date(), ex.getMessage(), request.getDescription(false));
+    public Message handleTokenRefreshException(TokenRefreshException ex, WebRequest request) {
+        return new Message(HttpStatus.FORBIDDEN.value(), new Date(), ex.getMessage(), request.getDescription(false));
     }
 }

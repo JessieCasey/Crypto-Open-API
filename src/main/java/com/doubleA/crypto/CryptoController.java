@@ -5,6 +5,7 @@ import com.doubleA.crypto.filter.FilterCondition;
 import com.doubleA.crypto.filter.GenericFilterCriteriaBuilder;
 import com.doubleA.crypto.filter.PageResponse;
 import com.doubleA.crypto.service.CryptoService;
+import com.doubleA.news.service.NewsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,16 +19,19 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/crypto")
 @Slf4j
 public class CryptoController {
 
     private final CryptoService cryptoService;
+    private final NewsService newsService;
     private final FilterBuilderService filterBuilderService;
 
-    public CryptoController(CryptoService cryptoService, FilterBuilderService filterBuilderService) {
+    public CryptoController(CryptoService cryptoService, NewsService newsService, FilterBuilderService filterBuilderService) {
         this.cryptoService = cryptoService;
+        this.newsService = newsService;
         this.filterBuilderService = filterBuilderService;
     }
 
@@ -35,22 +39,36 @@ public class CryptoController {
     public ResponseEntity<?> updateData() {
         log.info("[Get][CryptoController] Request to method 'updateData'");
         try {
+            newsService.updateData();
             cryptoService.updateData();
             return ResponseEntity.ok("Updated");
         } catch (URISyntaxException | IOException e) {
-            log.error("Error in method 'getAdvertisementsByUser': " + e.getMessage());
+            log.error("Error in method 'updateData': " + e.getMessage());
             return ResponseEntity.badRequest().body("Not updated");
         }
     }
 
+    @GetMapping("/top-market")
+    public ResponseEntity<?> getTopMarketChangeCryptos(
+            @RequestParam(value = "count", defaultValue = "0", required = false) int count) {
+        log.info("[Get][CryptoController] Request to method 'getTopTradeVolumeCryptos'");
+        try {
+            return ResponseEntity.ok(cryptoService.getTopMarketCap(count));
+        } catch (Exception e) {
+            log.error("Error in method 'getTopTradeVolumeCryptos': " + e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @GetMapping("/trending")
-    public ResponseEntity<?> getTrendingCryptos() {
+    public ResponseEntity<?> getTrendingCryptos(
+            @RequestParam(value = "count", defaultValue = "0", required = false) int count) {
         log.info("[Get][CryptoController] Request to method 'getTrendingCryptos'");
         try {
-            return ResponseEntity.ok(cryptoService.getTrending());
+            return ResponseEntity.ok(cryptoService.getTrending(count));
         } catch (Exception e) {
             log.error("Error in method 'getTrendingCryptos': " + e.getMessage());
-            return ResponseEntity.badRequest().body(e);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 

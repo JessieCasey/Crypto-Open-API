@@ -17,7 +17,7 @@ import java.io.IOException;
 @Slf4j
 public class ApiKeyFilter extends GenericFilterBean {
 
-    public static final String APIKEY = "C-KEY";
+    public static final String APIKEY = "C_KEY";
     private final ApiKeyRepository apiKeyRepository;
 
     @Autowired
@@ -28,13 +28,13 @@ public class ApiKeyFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
-        if (req.getRequestURI().matches(".*\\b(auth|verify|crypto|api)\\b.*") || apiKeyRepository.existsById(req.getHeader(APIKEY))) {
+
+        if (req.getRequestURI().matches(".*\\b(auth|verify|users)\\b.*") || apiKeyRepository.existsById(req.getHeader(APIKEY))) {
             chain.doFilter(request, response);
         } else {
             HttpServletResponse httpResponse = (HttpServletResponse) response;
             httpResponse.setContentType("application/json");
             httpResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "Required headers not specified in the request");
         }
-
     }
 }

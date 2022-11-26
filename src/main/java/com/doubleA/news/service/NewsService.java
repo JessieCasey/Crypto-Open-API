@@ -10,4 +10,7 @@ public interface NewsService {
     void updateData();
 
     Page<News> getPage(Query query, Pageable pageable);
+
+    News getNewestNews();
+
 }

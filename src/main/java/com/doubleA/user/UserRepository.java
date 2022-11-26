@@ -10,6 +10,8 @@ import java.util.Optional;
 public interface UserRepository extends MongoRepository<User, String>, ResourceRepository<User, String> {
     Optional<User> findByUsername(String username);
 
+    Optional<User> findByApikey_Id(String apiKey);
+
     boolean existsByUsername(String username);
 
     User findByVerificationCode(String code);
