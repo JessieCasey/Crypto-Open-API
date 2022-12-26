@@ -72,11 +72,11 @@ public class CryptoController {
         }
     }
 
-    @GetMapping("/{key}")
-    public ResponseEntity<?> getDetailedCrypto(@PathVariable String key) {
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getDetailedCrypto(@PathVariable String id) {
         log.info("[Get][CryptoController] Request to method 'getDetailedCrypto'");
         try {
-            return ResponseEntity.ok(cryptoService.getCrypto(key));
+            return ResponseEntity.ok(cryptoService.getCrypto(id));
         } catch (Exception e) {
             log.error("Error in method 'getDetailedCrypto': " + e.getMessage());
             return ResponseEntity.badRequest().body(e);
