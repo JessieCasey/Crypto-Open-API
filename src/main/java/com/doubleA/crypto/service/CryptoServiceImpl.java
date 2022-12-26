@@ -77,8 +77,8 @@ public class CryptoServiceImpl implements CryptoService {
     }
 
     @Override
-    public Crypto getCrypto(String key) {
-        return cryptoRepository.findById(key).orElseThrow();
+    public Crypto getCrypto(String id) {
+        return cryptoRepository.findById(id).orElseThrow();
     }
 
     @Override

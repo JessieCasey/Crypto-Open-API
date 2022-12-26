@@ -15,7 +15,7 @@ public interface CryptoService {
 
     List<CryptoDTO> getTrending(int count);
 
-    Crypto getCrypto(String key);
+    Crypto getCrypto(String id);
 
     void updateData() throws URISyntaxException, IOException;
 

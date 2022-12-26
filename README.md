@@ -19,12 +19,6 @@ Then, we need to run .yaml files, you can not only directly open them in IDE, bu
   docker-compose -f docker-mongoDB.yaml up
 ```
 
-
-```
-# "Put here your api key"
-api.key = 4bcf051e1603553d4218e2cea8b00555
-```
-
 Finally, you need to connect smtp server and then you can use Gmail service for it.
 
 ### Notice ❗️
@@ -160,5 +154,37 @@ Let's use our C-KEY to get response from the server.
     ]
 }
 ```
-
 ---
+`[GET]: /api/crypto/{id}`
+
+With a usage of our key we can get specific cryptocurrency information in order to do that let's put the `id` into the request.
+
+![logo](./imgs/img_2.png)
+```
+{
+    "id": "ethereum",
+    "symbol": "eth",
+    "name": "Ethereum",
+    "imageURL": "https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880",
+    "currentPrice": 1217.49,
+    "marketCap": 1.4669413E11,
+    "marketCapRank": 2.0,
+    "totalVolume": 3.2727137E9,
+    "high24": 1224.02,
+    "low24": 1206.17,
+    "priceChange": 11.33,
+    "priceChangePercentage": 0.93927,
+    "marketCapChange": 1.2361915E9,
+    "marketCapChangePercentage": 0.84986,
+    "circulatingSupply": 1.2052461E8,
+    "totalSupply": 1.2052461E8,
+    "maxSupply": null,
+    "ath": 4878.26,
+    "athChange": -75.04766,
+    "athDate": "2021-11-10T14:24:19.604+00:00",
+    "atl": 0.432979,
+    "atlChange": 281031.6,
+    "atlDate": "2015-10-20T00:00:00.000+00:00",
+    "lastUpdated": "2022-12-26T20:56:18.032+00:00"
+}
+```
